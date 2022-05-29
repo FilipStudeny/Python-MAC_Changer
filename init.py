@@ -1,20 +1,30 @@
 ###############################
 #         MAC CHANGER         #
 ###############################
-#!/usr/bin/env python3
+#!/usr/bin/python3
 
 import subprocess as ps
 import optparse as parse
 
-parser = parse.OptionParser()
-parser.add_option("-i", "--interface", dest="interface", help="Interface to change its MAC address")
-parser.add_option("-m", "--mac", dest="new_mac", help="New MAC adress")
+def Change_MAC(interface, mac):
+    print("[+] SETTINGS [+]")
+    print("     Interface > " + interface)
+    print("     MAC > " + mac + "\n\n")
 
-parser.parse_args()
+    print("[+] Changing MAC adress for " + interface + " [+]")
+    ps.call(["ifconfig", interface, "down"])
+    ps.call(["ifconfig", interface, "hw ether", mac])
+    ps.call(["ifconfig", interface, "up"])
 
-interface = input("interface = ")
+    print("[+] MAC address changed [+]")
 
-print("[+] Changing MAC adress for " + interface + " [+]")
-ps.call(["ifconfig", interface, "down"])
-ps.call(["ifconfig", interface, "hw ether 00:11:22:33:44:55"])
-ps.call(["ifconfig", interface, "up"])
+def Get_Values():
+    # CLI
+    parser = parse.OptionParser()
+    parser.add_option("-i", "--interface", dest="interface", help="Interface to change its MAC address")
+    parser.add_option("-m", "--mac", dest="new_mac", help="New MAC adress")
+    return parser.parse_args()
+
+(values, arguments) = Get_Values()
+Change_MAC(values.interface,values.new_mac)
+
