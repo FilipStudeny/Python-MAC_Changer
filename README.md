@@ -1,2 +1,2 @@
 # Python-MAC_Changer
-Simple MAC adress changer using Python3
+Simple Linux MAC adress changer using Python3
