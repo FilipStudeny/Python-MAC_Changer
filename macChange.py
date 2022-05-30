@@ -1,10 +1,10 @@
 ###############################
 #         MAC CHANGER         #
 ###############################
-#!/usr/bin/python3
 
 import subprocess as ps
 import optparse as parse
+import re 
 
 def Change_MAC(interface, mac):
     print("[+] SETTINGS [+]")
@@ -23,8 +23,17 @@ def Get_Values():
     parser = parse.OptionParser()
     parser.add_option("-i", "--interface", dest="interface", help="Interface to change its MAC address")
     parser.add_option("-m", "--mac", dest="new_mac", help="New MAC adress")
-    return parser.parse_args()
+    (values, arguments) = parser.parse_args()
+    
+    if not values.interface:
+        parser.error("[X] Please specify interface, use --help for more info [X]")
+    elif not values.new_mac:
+        parser.error("[-] Generating random MAC adress [-]")
+    return values
+        
 
-(values, arguments) = Get_Values()
+values = Get_Values()
 Change_MAC(values.interface,values.new_mac)
+
+ifConfigResult = ps.check_output(['ifconfig', values.interface])
 
